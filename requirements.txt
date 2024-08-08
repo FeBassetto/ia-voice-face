@@ -4,5 +4,11 @@ speechrecognition
 transformers
 torch
 googletrans==4.0.0-rc1
-mediapipe==0.10.0
+mediapipe
 ttkbootstrap
+pillow
+matplotlib
+tensorflow
+deepface
+tf-keras
+fer

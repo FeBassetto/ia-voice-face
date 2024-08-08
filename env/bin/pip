@@ -1,4 +1,4 @@
-#!/tmp/ia-view-env/bin/python3.9
+#!/Users/felipebassetto/Documents/study/ia-voice-face/env/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys

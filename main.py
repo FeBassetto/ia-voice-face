@@ -12,7 +12,7 @@ class EmotionApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Emotion Detection App")
-        self.root.geometry("800x600")
+        self.root.geometry("1080x700")
         self.style = ttk.Style("cosmo")
 
         self.translator = Translator()
@@ -42,12 +42,15 @@ class EmotionApp:
             results = self.face_emotion_detector.detect_faces(frame)
             frame = self.face_emotion_detector.draw_faces(frame, results)
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            
+            frame = cv2.resize(frame, (1080, 700))
+            
             img = Image.fromarray(frame)
             imgtk = ImageTk.PhotoImage(image=img)
             self.camera_label.imgtk = imgtk
             self.camera_label.configure(image=imgtk)
         else:
-            img = Image.new('RGB', (640, 480), color=(73, 109, 137))
+            img = Image.new('RGB', (1080, 700), color=(73, 109, 137))
             d = ImageDraw.Draw(img)
             d.text((10, 10), "Erro ao acessar a câmera", fill=(255, 255, 0))
             imgtk = ImageTk.PhotoImage(image=img)
@@ -93,12 +96,12 @@ class EmotionApp:
 
     def translate_emotion(self, emotion):
         translations = {
-            "joy": "Alegria",
-            "sadness": "Tristeza",
-            "anger": "Raiva",
-            "fear": "Medo",
-            "surprise": "Surpresa",
+            "angry": "Raiva",
             "disgust": "Nojo",
+            "fear": "Medo",
+            "happy": "Feliz",
+            "sad": "Triste",
+            "surprise": "Surpreso",
             "neutral": "Neutro"
         }
         return translations.get(emotion, emotion)
