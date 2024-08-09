@@ -12,4 +12,3 @@ tensorflow==2.17.0
 deepface==0.0.92
 tf_keras==2.17.0
 fer==22.5.1
-pyaudio==0.2.11
