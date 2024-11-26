@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Emotion Detection App</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center mt-5">Emotion Detection App</h1>
+      <div class="row mt-4">
+        {% if webcam_available %}
+        <div class="col-md-8">
+          <div class="video-container">
+            <img
+              src="{{ url_for('video_feed') }}"
+              class="img-fluid"
+              id="video"
+            />
+          </div>
+        </div>
+        {% else %}
+        <div class="col-md-8">
+          <div class="alert alert-warning">
+            Webcam não disponível. As funcionalidades de detecção facial serão
+            desativadas.
+          </div>
+        </div>
+        {% endif %}
+        <div class="col-md-4">
+          <button id="recordBtn" class="btn btn-primary btn-block mt-4">
+            Começar a Gravar
+          </button>
+          <div id="result" class="mt-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var recording = false;
+
+      document
+        .getElementById("recordBtn")
+        .addEventListener("click", function () {
+          if (!recording) {
+            recording = true;
+            this.innerText = "Gravando...";
+            this.classList.remove("btn-primary");
+            this.classList.add("btn-danger");
+            this.disabled = true;
+            fetch("/start_recording", { method: "POST" })
+              .then((response) => response.json())
+              .then((data) => {
+                checkResult();
+              });
+          }
+        });
+
+      function checkResult() {
+        fetch("/get_result")
+          .then((response) => {
+            if (response.status === 202) {
+              // Recording in progress
+              setTimeout(checkResult, 1000);
+              return;
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data) {
+              if (data.error) {
+                document.getElementById("result").innerText = data.error;
+              } else {
+                let emotions = "";
+                for (const [key, value] of Object.entries(data.emotions)) {
+                  emotions += `<p>${key}: ${value}</p>`;
+                }
+                document.getElementById(
+                  "result"
+                ).innerHTML = `<h4>Texto:</h4><p>${data.text}</p><h4>Resultado da Análise:</h4>${emotions}`;
+              }
+              document.getElementById("recordBtn").innerText =
+                "Começar a Gravar";
+              document
+                .getElementById("recordBtn")
+                .classList.remove("btn-danger");
+              document.getElementById("recordBtn").classList.add("btn-primary");
+              document.getElementById("recordBtn").disabled = false;
+              recording = false;
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            setTimeout(checkResult, 1000);
+          });
+      }
+    </script>
+  </body>
+</html>

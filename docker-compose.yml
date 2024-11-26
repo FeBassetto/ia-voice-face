@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  emotion-app:
+    build: .
+    ports:
+      - "4444:4444"
+    devices:
+      - "/dev/snd:/dev/snd"
+      # - "/dev/video0:/dev/video0"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - .:/app

@@ -1,0 +1,41 @@
+body {
+  background-color: #f8f9fa;
+}
+
+h1 {
+  color: #343a40;
+}
+
+.video-container {
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#video {
+  width: 100%;
+  height: auto;
+}
+
+#recordBtn {
+  margin-top: 20px;
+}
+
+#result h4 {
+  margin-top: 20px;
+}
+
+#result p {
+  margin-bottom: 5px;
+}
+
+/* Optional: Custom styles for the recording button */
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
